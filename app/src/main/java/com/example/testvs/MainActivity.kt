@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        activityClient = ActivityRecognition.getClient(this)
+
         // 활동 인식 권한을 확인하는 메소드
         if (!checkRecognitionPermissionIfLaterVersionQ()) {
             requestRecognitionPermission()
@@ -44,13 +46,13 @@ class MainActivity : AppCompatActivity() {
         //버튼 초기화
         initViews()
 
+
         // PedingIntent 설정 및 활동전한 요청
         initPendingIntent()
+
         if (checkRecognitionPermissionIfLaterVersionQ()) {
             registerActivityTransitionUpdates()
         }
-
-        activityClient = ActivityRecognition.getClient(this)
 
     }
 
@@ -124,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(
             activityTransitionReceiver,
             intentFilter,
-            RECEIVER_NOT_EXPORTED // 수정된 부분
+            RECEIVER_NOT_EXPORTED
         )
     }
 
@@ -132,22 +134,21 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         Log.d("Activity Recognition", "onNewIntent")
-        if (intent != null) {
-            checkIntentData(intent)
-        }
+        checkIntentData(intent)
     }
 
     private fun checkIntentData(intent: Intent) {
         val activityTransition = intent.getStringExtra(TRANSITIONS_EXTRA)
 
         if (activityTransition != null) {
-            adapter.addItem(activityTransition)
+            adapter.clearItems() // 기존 기록 제거
+            adapter.addItem(activityTransition) // 새로운 기록 추가
         }
     }
     //앱이 중지 될때 감지
     override fun onStop() {
         if (checkRecognitionPermissionIfLaterVersionQ()) {
-            unregisterActivityTransitionUpdates()
+           unregisterActivityTransitionUpdates()
         }
 
         unregisterReceiver(activityTransitionReceiver)
