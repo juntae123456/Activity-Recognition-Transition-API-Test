@@ -86,4 +86,7 @@ class ActivityTransitionsReceiver: BroadcastReceiver() {
         val dateTimeFormatter = DateTimeFormatter.ofPattern("a KK:mm:ss") // 시간 형식 지정
         return LocalDateTime.now(timeZoneId).format(dateTimeFormatter) // 현재 시간 반환
     }
+
+
 }
+

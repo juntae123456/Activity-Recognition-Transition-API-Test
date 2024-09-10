@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+       FordegroundService()
+
         activityClient = ActivityRecognition.getClient(this)
 
         // 활동 인식 권한을 확인하는 메소드
@@ -61,18 +63,37 @@ class MainActivity : AppCompatActivity() {
     // 안드로이드 10 이상인 경우, RecognitionPermission 확인
     private fun checkRecognitionPermissionIfLaterVersionQ(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+            // ACTIVITY_RECOGNITION 권한 확인
+            val activityRecognitionGranted = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACTIVITY_RECOGNITION
             )
-        } else true
+
+            // 위치 권한 확인
+            val locationPermissionGranted = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) || PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+
+            // 둘 다 권한이 있는지 확인
+            activityRecognitionGranted && locationPermissionGranted
+        } else {
+            true
+        }
     }
+
 
     // 권한이 없을시 사용
     private fun requestRecognitionPermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+            arrayOf(Manifest.permission.ACTIVITY_RECOGNITION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.POST_NOTIFICATIONS),
             0,
         )
     }
@@ -98,6 +119,14 @@ class MainActivity : AppCompatActivity() {
     // 현재 활동과 시간을 업데이트하는 메서드
     private fun updateCurrentActivity() {
         binding.tvCurrentActivity.text = "현재 활동: $currentActivity"
+    }
+
+    private fun FordegroundService(){
+        Intent(this, ActivityTransitionService::class.java).run {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) startForegroundService(this)
+            else startService(this)
+            Log.d("ActivityTransition", "Foreground Service 시작됨 (Android O 이상)")
+        }
     }
 
     // 브로드캐스트 사용
@@ -170,14 +199,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 앱이 중지 될때 감지
-    override fun onStop() {
-        if (checkRecognitionPermissionIfLaterVersionQ()) {
-            unregisterActivityTransitionUpdates()
-        }
+    //override fun onStop() {
+       // if (checkRecognitionPermissionIfLaterVersionQ()) {
+           // unregisterActivityTransitionUpdates()
+       // }
 
-        unregisterReceiver(activityTransitionReceiver)
-        super.onStop()
-    }
+        //unregisterReceiver(activityTransitionReceiver)
+       // super.onStop()
+    //}
 
     // 활동 감지 종료 업데이트
     private fun unregisterActivityTransitionUpdates() {
