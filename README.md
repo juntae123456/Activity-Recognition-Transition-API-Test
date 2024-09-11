@@ -40,7 +40,7 @@ Activity Recognition Transition API를 활용한 간단한 테스트 앱입니�
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
    ```
 
-##참고 자료
+### 참고 자료
 
 https://developer.android.com/develop/sensors-and-location/location/transitions?hl=ko
 
