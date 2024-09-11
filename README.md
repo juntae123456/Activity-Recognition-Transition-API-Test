@@ -11,6 +11,7 @@ Activity Recognition Transition API를 활용한 간단한 테스트 앱입니�
 ### 필수 사항
 
 - kotlin 1.9.0 이상
+- SDK 34를 기준으로 제작 변경시 build.gradle.kt minsdk변경
 
 ### 설치 방법
 
