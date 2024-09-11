@@ -4,7 +4,8 @@ Activity Recognition Transition API를 활용한 간단한 테스트 앱입니�
 
 ## 프로젝트 설명
 
-[//]: # 이 프로젝트는 Activity Recognition Transition API를 이용한 자동차나 자전거,걷기,뛰기,정지를 알려주는 앱입니다.
+이 프로젝트는 Activity Recognition Transition API를 이용한 자동차나 자전거,걷기,뛰기,정지를 알려주는 앱입니다.
+
 ## 설치 및 설정
 
 ### 필수 사항
