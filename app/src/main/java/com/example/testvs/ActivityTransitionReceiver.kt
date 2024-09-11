@@ -44,9 +44,9 @@ class ActivityTransitionsReceiver: BroadcastReceiver() {
     private fun getTransitionInfo(event: ActivityTransitionEvent): String {
         val activityType = activityType(event.activityType) // 활동 유형 변환
         val transitionType = transitionType(event.transitionType) // 전환 유형 변환
-
+        Log.d("ActivityRecognition", "Activity Type: $activityType, Transition Type: $transitionType") // 로그 추가
         // 활동 유형, 전환 유형, 현재 시간을 문자열로 결합
-        return "$activityType ($transitionType) ${getCurrentTime()}"
+        return "($activityType) ($transitionType) ${getCurrentTime()}"
     }
 
     // 전환 정보를 메인 액티비티로 전달하는 메서드
@@ -86,4 +86,7 @@ class ActivityTransitionsReceiver: BroadcastReceiver() {
         val dateTimeFormatter = DateTimeFormatter.ofPattern("a KK:mm:ss") // 시간 형식 지정
         return LocalDateTime.now(timeZoneId).format(dateTimeFormatter) // 현재 시간 반환
     }
+
+
 }
+
