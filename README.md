@@ -15,30 +15,8 @@ Activity Recognition Transition API를 활용한 간단한 테스트 앱입니�
 
 ### 설치 방법
 
-1. build.gradle.kts(app)
+1. 
 
-   ```sh
-   implementation ("com.google.android.gms:play-services-location:21.3.0")
-   ```
-
-2. AndroidManifest.xml
-
-   ```sh
-   //활동기반 
-    <!-- Required for 28 and below. -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!-- Required for 29+. -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    //포그라운드
-     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    //위치기반
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
-   ```
 
 ### 참고 자료
 
